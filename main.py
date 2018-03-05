@@ -38,13 +38,13 @@ def handle_response(sym, response):
 
         subline = 'buy_price/sell_price = {} || depth: {}'.format(price_substr, response.body)
 
-    # Формируем новую строку на дозапись
+    # Формируем новую строку на запись
     new_line = 'timestamp - {} || {}\n'
     timestamp = round(time.time())
     new_line = new_line.format(timestamp, subline)
 
-    # Создаем или дозаписываем строку
-    file_name = os.path.join(os.getcwd(), 'log', '{}.txt'.format(sym))
+    # Создаем файл или дозаписываем строку в уже существующий
+    file_name = os.path.join(os.getcwd(), 'logs', '{}.txt'.format(sym))
     append_write = 'a' if os.path.exists(file_name) else 'w'
     with open(file_name, append_write) as f:
         f.write(new_line)
@@ -55,8 +55,8 @@ def handle_response(sym, response):
 
 if __name__ == '__main__':
     # Проверяем существование директории с логами
-    if not os.path.exists(os.path.join(os.getcwd(), 'log')):
-        os.mkdir(os.path.join(os.getcwd(), 'log'))
+    if not os.path.exists(os.path.join(os.getcwd(), 'logs')):
+        os.mkdir(os.path.join(os.getcwd(), 'logs'))
 
     current_ioloop = tornado.ioloop.IOLoop.current()
     current_ioloop.spawn_callback(main_loop)
